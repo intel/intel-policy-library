@@ -1,0 +1,21 @@
+{
+    "azurerm": {
+    "policies_url": "https://github.com/intel/policy-library-intel/blob/main/docs/azurerm/policies.md",
+    "azurerm_cosmosdb_cassandra_datacenter": {
+        "resource": "azurerm_cosmosdb_cassandra_datacenter",
+        "parameter": "sku_name",
+        "violation": "The configured `sku_name` should be an Intel Xeon 3rd Generation(code-named Ice Lake) Scalable processors or an Intel Xeon 4th Generation(code-named Sapphire Rapids) Scalable processors.",
+        "category": "Infrastructure (IaaS)",
+        "provider": "hashicorp/azurerm",
+        "file_name": "intel-azurerm-cosmosdb-cassandra-datacenter-deny-unapproved-instance-types.sentinel",
+        "error": " is not an allowed server type.",
+        "optimal": [
+            "Standard_D16s_v4"
+        ],
+        "alternative": [],
+        "ai": [],
+        "confidential_compute": [],
+        "config": ""
+    }
+    }
+}

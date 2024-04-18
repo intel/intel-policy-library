@@ -1,0 +1,28 @@
+name: Execute parse-json.py
+
+on:
+  push:
+    paths:
+      - 'imports/static/optimal.json'
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Run parse-json.py
+        run: python .github/parse-json.py
+
+      - name: Commit changes to approved.json and policies.md files
+        uses: EndBug/add-and-commit@v9
+        with:
+          default_author: github_actions
+          message: 'Commit from GitHub Actions to update approved.json and policies.md files'

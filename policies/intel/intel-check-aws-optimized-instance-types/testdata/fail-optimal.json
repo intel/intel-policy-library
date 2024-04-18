@@ -1,0 +1,27 @@
+{
+    "aws": {
+        "policies_url": "https://github.com/intel/policy-library-intel/blob/main/docs/aws/policies.md",
+        "aws_autoscaling_group": {
+            "resource": "aws_autoscaling_group",
+            "parameter": "instance_type",
+            "violation": "The configured \"instance_type\" should be Intel Xeon 3rd Generation(code-named Ice Lake) and Intel Xeon 4th Generation(code-named Sapphire Rapids) Scalable processors.",
+            "category": "Platform (PaaS)",
+            "provider": "hashicorp/aws",
+            "file_name": "intel-aws-autoscaling-group-deny-unapproved-instance-types.sentinel",
+            "error": " is not an allowed server type.",
+            "optimal": [
+                "c6i.12xlarge",
+                "c6i.16xlarge"
+            ],
+            "alternative": [
+                "m3i.large",
+                "m7i.large"
+            ],
+            "ai": [
+                "m7i.large"
+            ],
+            "confidential_compute": [],
+            "config": ""
+        }
+    }
+}

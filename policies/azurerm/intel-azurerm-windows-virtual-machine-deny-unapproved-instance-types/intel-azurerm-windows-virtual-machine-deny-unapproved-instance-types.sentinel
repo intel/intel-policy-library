@@ -1,0 +1,51 @@
+import "tfplan/v2" as tfplan
+import "approved"
+import "policy_summary"
+
+param valid_actions default [
+	["no-op"],
+	["create"],
+	["update"],
+]
+
+doc = {
+	"allowed":   approved.azurerm.azurerm_windows_virtual_machine.optimal + approved.azurerm.azurerm_windows_virtual_machine.alternative,
+	"category":  approved.azurerm.azurerm_windows_virtual_machine.category,
+	"error":     approved.azurerm.azurerm_windows_virtual_machine.error,
+	"file_name": approved.azurerm.azurerm_windows_virtual_machine.deny_file_name,
+	"md_url":    approved.azurerm.policies_url,
+	"parameter": approved.azurerm.azurerm_windows_virtual_machine.parameter,
+	"provider":  approved.azurerm.azurerm_windows_virtual_machine.provider,
+	"resource":  approved.azurerm.azurerm_windows_virtual_machine.resource,
+	"violation": approved.azurerm.azurerm_windows_virtual_machine.violation,
+}
+
+// Filter resources by type
+all_resources = filter tfplan.resource_changes as _, rc {
+	rc.type is doc.resource and
+		rc.mode is "managed" and
+		rc.change.actions in valid_actions
+}
+
+// Filter resources that violate a given condition
+violators = filter all_resources as _, r {
+	r.change.after.size not in doc.allowed
+}
+
+// Build a summary report
+summaryreport = {
+	"name": doc.name,
+	"violations": map violators as _, violation {
+		{
+			"name":    violation.name,
+			"address": violation.address,
+			"type":    violation.type,
+			"message": violation.name + doc.error,
+		}
+	},
+}
+
+# Unapproved instance type detected
+main = rule {
+	policy_summary.summary(summaryreport, doc)
+}

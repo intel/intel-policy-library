@@ -1,0 +1,53 @@
+import "tfplan/v2" as tfplan
+import "approved"
+import "policy_summary"
+
+param valid_actions default [
+	["no-op"],
+	["create"],
+	["update"],
+]
+
+doc = {
+	"allowed":   "1.2",
+	"category":  approved.azurerm.azurerm_windows_web_app.category,
+	"error":     " must have a minimum set TLS version of 1.2",
+	"file_name": "intel-azurerm-windows-web-app-enforce-minimum-tls.sentinel",
+	"md_url":    approved.azurerm.policies_url,
+	"parameter": "minimum_tls_version",
+	"provider":  approved.azurerm.azurerm_windows_web_app.provider,
+	"resource":  approved.azurerm.azurerm_windows_web_app.resource,
+	"violation": "The configured windows web app instances should use a minimum TLS version of 1.2",
+}
+
+// Filter resources by type
+all_resources = filter tfplan.resource_changes as _, rc {
+	rc.type is doc.resource and
+		rc.mode is "managed" and
+		rc.change.actions in valid_actions
+}
+
+// Filter resources that violate a given condition
+violators = filter all_resources as _, r {
+	all r.change.after.site_config else [] as _, site_config {
+		site_config.minimum_tls_version not in doc.allowed
+	}
+}
+
+// Build a summary report
+summaryreport = {
+	"name": doc.name,
+	"violations": map violators as _, violation {
+		{
+			"name":    violation.name,
+			"address": violation.address,
+			"type":    violation.type,
+			"message": violation.name + doc.error,
+		}
+	},
+}
+
+# The configured windows web app instances should use a minimum TLS version of 1.2
+main = rule {
+	policy_summary.summary(summaryreport, doc)
+}

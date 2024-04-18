@@ -1,0 +1,51 @@
+import "tfplan/v2" as tfplan
+import "approved"
+import "policy_summary"
+
+param valid_actions default [
+	["no-op"],
+	["create"],
+	["update"],
+]
+
+doc = {
+	"allowed":   approved.google.google_compute_instance.optimal,
+	"category":  approved.google.google_compute_instance.category,
+	"error":     approved.google.google_compute_instance.error,
+	"file_name": approved.google.google_compute_instance.check_file_name,
+	"md_url":    approved.google.policies_url,
+	"parameter": approved.google.google_compute_instance.parameter,
+	"provider":  approved.google.google_compute_instance.provider,
+	"resource":  approved.google.google_compute_instance.resource,
+	"violation": approved.google.google_compute_instance.violation,
+}
+
+// Filter resources by type
+all_resources = filter tfplan.resource_changes as _, rc {
+	rc.type is doc.resource and
+		rc.mode is "managed" and
+		rc.change.actions in valid_actions
+}
+
+// Filter resources that violate a given condition
+violators = filter all_resources as _, r {
+	r.change.after.machine_type not in doc.allowed
+}
+
+// Build a summary report
+summaryreport = {
+	"name": doc.name,
+	"violations": map violators as _, violation {
+		{
+			"name":    violation.name,
+			"address": violation.address,
+			"type":    violation.type,
+			"message": violation.change.after.machine_type + doc.error,
+		}
+	},
+}
+
+# A non-optimal instance type was chosen
+main = rule {
+	policy_summary.summary(summaryreport, doc)
+}

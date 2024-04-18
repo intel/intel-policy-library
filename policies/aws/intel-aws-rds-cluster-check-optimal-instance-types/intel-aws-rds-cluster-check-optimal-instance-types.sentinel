@@ -1,0 +1,51 @@
+import "tfplan/v2" as tfplan
+import "approved"
+import "policy_summary"
+
+param valid_actions default [
+	["no-op"],
+	["create"],
+	["update"],
+]
+
+doc = {
+	"allowed":   approved.aws.aws_rds_cluster.optimal,
+	"category":  approved.aws.aws_rds_cluster.category,
+	"error":     approved.aws.aws_rds_cluster.error,
+	"file_name": approved.aws.aws_rds_cluster.check_file_name,
+	"md_url":    approved.aws.policies_url,
+	"parameter": approved.aws.aws_rds_cluster.parameter,
+	"provider":  approved.aws.aws_rds_cluster.provider,
+	"resource":  approved.aws.aws_rds_cluster.resource,
+	"violation": approved.aws.aws_rds_cluster.violation,
+}
+
+// Filter resources by type
+all_resources = filter tfplan.resource_changes as _, rc {
+	rc.type is doc.resource and
+		rc.mode is "managed" and
+		rc.change.actions in valid_actions
+}
+
+// Filter resources that violate a given condition
+violators = filter all_resources as _, r {
+	r.change.after.db_cluster_instance_class else [] not in doc.allowed
+}
+
+// Build a summary report
+summaryreport = {
+	"name": doc.name,
+	"violations": map violators as _, violation {
+		{
+			"name":    violation.name,
+			"address": violation.address,
+			"type":    violation.type,
+			"message": violation.name + doc.error,
+		}
+	},
+}
+
+# A non-optimal instance type was chosen
+main = rule {
+	policy_summary.summary(summaryreport, doc)
+}

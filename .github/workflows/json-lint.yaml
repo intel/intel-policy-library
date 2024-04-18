@@ -1,0 +1,25 @@
+name: JSON Linter
+
+on:
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Install jsonlint
+        run: npm install -g jsonlint
+
+      - name: Lint JSON files
+        run: |
+          for file in $(git diff --name-only HEAD^); do
+            if [[ $file == *.json ]]; then
+              jsonlint -q $file || exit 1
+            fi
+          done

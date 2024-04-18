@@ -1,0 +1,57 @@
+import "tfplan/v2" as tfplan
+import "approved"
+import "policy_summary"
+
+param valid_actions default [
+	["no-op"],
+	["create"],
+	["update"],
+]
+
+doc = {
+	"allowed":   approved.aws.aws_autoscaling_group.optimal,
+	"category":  approved.aws.aws_autoscaling_group.category,
+	"error":     approved.aws.aws_autoscaling_group.error,
+	"file_name": approved.aws.aws_autoscaling_group.check_file_name,
+	"md_url":    approved.aws.policies_url,
+	"parameter": approved.aws.aws_autoscaling_group.parameter,
+	"provider":  approved.aws.aws_autoscaling_group.provider,
+	"resource":  approved.aws.aws_autoscaling_group.resource,
+	"violation": approved.aws.aws_autoscaling_group.violation,
+}
+
+// Filter resources by type
+all_resources = filter tfplan.resource_changes as _, rc {
+	rc.type is doc.resource and
+		rc.mode is "managed" and
+		rc.change.actions in valid_actions
+}
+
+// Filter resources that violate a given condition
+violators = filter all_resources as _, r {
+	all r.change.after.mixed_instances_policy as _, mixed_instance_policy {
+		all mixed_instance_policy.launch_template as _, launch_template {
+			any launch_template.override as _, override {
+				override.instance_type else [] not in doc.allowed
+			}
+		}
+	}
+}
+
+// Build a summary report
+summaryreport = {
+	"name": doc.name,
+	"violations": map violators as _, violation {
+		{
+			"name":    violation.name,
+			"address": violation.address,
+			"type":    violation.type,
+			"message": violation.name + doc.error,
+		}
+	},
+}
+
+# Unapproved instance type detected
+main = rule {
+	policy_summary.summary(summaryreport, doc)
+}

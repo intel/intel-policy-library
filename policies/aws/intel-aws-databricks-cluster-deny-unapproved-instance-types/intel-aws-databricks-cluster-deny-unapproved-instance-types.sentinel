@@ -1,0 +1,51 @@
+import "tfplan/v2" as tfplan
+import "approved"
+import "policy_summary"
+
+param valid_actions default [
+	["no-op"],
+	["create"],
+	["update"],
+]
+
+doc = {
+	"allowed":   approved.databricks.databricks_cluster.optimal + approved.databricks.databricks_cluster.alternative,
+	"category":  approved.databricks.databricks_cluster.category,
+	"error":     approved.databricks.databricks_cluster.error,
+	"file_name": approved.databricks.databricks_cluster.deny_file_name,
+	"md_url":    approved.databricks.policies_url,
+	"parameter": approved.databricks.databricks_cluster.parameter,
+	"provider":  approved.databricks.databricks_cluster.provider,
+	"resource":  approved.databricks.databricks_cluster.resource,
+	"violation": approved.databricks.databricks_cluster.violation,
+}
+
+// Filter resources by type
+all_resources = filter tfplan.resource_changes as _, rc {
+	rc.type is doc.resource and
+		rc.mode is "managed" and
+		rc.change.actions in valid_actions
+}
+
+// Filter resources that violate a given condition
+violators = filter all_resources as _, r {
+	r.change.after.node_type_id else [] not in doc.allowed
+}
+
+// Build a summary report
+summaryreport = {
+	"name": doc.name,
+	"violations": map violators as _, violation {
+		{
+			"name":    violation.name,
+			"address": violation.address,
+			"type":    violation.type,
+			"message": violation.name + doc.error,
+		}
+	},
+}
+
+# Unapproved instance type detected
+main = rule {
+	policy_summary.summary(summaryreport, doc)
+}

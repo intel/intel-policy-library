@@ -1,0 +1,51 @@
+import "tfplan/v2" as tfplan
+import "approved"
+import "policy_summary"
+
+param valid_actions default [
+	["no-op"],
+	["create"],
+	["update"],
+]
+
+doc = {
+	"allowed":   approved.databricks.databricks_cluster.config,
+	"category":  approved.databricks.databricks_cluster.category,
+	"error":     " is not an allowed runtime engine type.",
+	"file_name": "intel-aws-databricks-cluster-deny-unapproved-runtime-engines.sentinel",
+	"md_url":    approved.policies_url.databricks,
+	"parameter": approved.databricks.databricks_cluster.parameter,
+	"provider":  approved.databricks.databricks_cluster.provider,
+	"resource":  approved.databricks.databricks_cluster.resource,
+	"violation": "The configured databricks cluster should use one of the runtime engines:" + approved.databricks.databricks_cluster.config,
+}
+
+// Filter resources by type
+all_resources = filter tfplan.resource_changes as _, rc {
+	rc.type is doc.resource and
+		rc.mode is "managed" and
+		rc.change.actions in valid_actions
+}
+
+// Filter resources that violate a given condition
+violators = filter all_resources as _, r {
+	r.change.after.runtime_engine else [] not in doc.allowed
+}
+
+// Build a summary report
+summaryreport = {
+	"name": doc.name,
+	"violations": map violators as _, violation {
+		{
+			"name":    violation.name,
+			"address": violation.address,
+			"type":    violation.type,
+			"message": violation.name + doc.error,
+		}
+	},
+}
+
+# Unapproved runtime engine detected
+main = rule {
+	policy_summary.summary(summaryreport, doc)
+}

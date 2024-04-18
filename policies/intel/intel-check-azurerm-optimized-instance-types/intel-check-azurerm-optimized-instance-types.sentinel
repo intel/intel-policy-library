@@ -1,0 +1,51 @@
+# Import the JSON files as external data
+import "optimal"
+import "approved"
+
+# Define a function to validate instance types
+validate_instance_types = func() {
+    # Assume all instance types are valid initially
+    all_valid = true
+
+    # Iterate over each AZURERM resource in the optimal file
+    for optimal.azurerm as resource, details {
+        # Skip processing for the 'policies_url' key
+        if resource == "policies_url" {
+            continue
+        }
+
+        # Ensure the resource exists in the approved file and has an optimal property
+        if resource in approved.azurerm and "optimal" in approved.azurerm[resource] {
+            approved_types = approved.azurerm[resource].optimal
+
+            # Iterate over each optimal instance type for the resource
+            for details.optimal as type {
+                # If the instance type is not approved, set all_valid to false
+                if type not in approved_types {
+                    all_valid = false
+                    break  # Found an unapproved type, no need to check further
+                }
+            }
+        } else {
+            all_valid = false
+        }
+
+        # Break out of the loop if a validation failure is detected
+        if not all_valid {
+            break
+        }
+    }
+
+    # If validation fails, print a specific message
+    if !all_valid {
+        print("New Intel optimal instance type recommendations are available. \n Update your policy library to take advantage of the latest series of performance and security enhancements available from Intel \n For instructions on staying up to date see https://github.com/intel/intel-policy-library")
+    }
+
+    # Return the validation result
+    return all_valid
+}
+
+# New updates are available from Intel. Please update your policy library
+main = rule {
+    validate_instance_types()
+}

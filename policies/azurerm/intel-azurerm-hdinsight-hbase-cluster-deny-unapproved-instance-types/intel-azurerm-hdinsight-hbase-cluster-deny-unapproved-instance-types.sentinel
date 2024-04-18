@@ -1,0 +1,61 @@
+import "tfplan/v2" as tfplan
+import "approved"
+import "policy_summary"
+
+param valid_actions default [
+	["no-op"],
+	["create"],
+	["update"],
+]
+
+doc = {
+	"allowed":   approved.azurerm.azurerm_hdinsight_hbase_cluster.optimal + approved.azurerm.azurerm_hdinsight_hbase_cluster.alternative,
+	"category":  approved.azurerm.azurerm_hdinsight_hbase_cluster.category,
+	"error":     approved.azurerm.azurerm_hdinsight_hbase_cluster.error,
+	"file_name": approved.azurerm.azurerm_hdinsight_hbase_cluster.deny_file_name,
+	"md_url":    approved.azurerm.policies_url,
+	"parameter": approved.azurerm.azurerm_hdinsight_hbase_cluster.parameter,
+	"provider":  approved.azurerm.azurerm_hdinsight_hbase_cluster.provider,
+	"resource":  approved.azurerm.azurerm_hdinsight_hbase_cluster.resource,
+	"violation": approved.azurerm.azurerm_hdinsight_hbase_cluster.violation,
+}
+
+// Filter resources by type
+all_resources = filter tfplan.resource_changes as _, rc {
+	rc.type is doc.resource and
+		rc.mode is "managed" and
+		rc.change.actions in valid_actions
+}
+
+// Filter resources that violate a given condition
+violators = filter all_resources as _, r {
+	any r.change.after.roles as _, role {
+		any role.head_node as _, head_node {
+			head_node.vm_size not in doc.allowed
+		} or
+			any role.worker_node as _, worker_node {
+				worker_node.vm_size not in doc.allowed
+			} or
+			any role.zookeeper_node as _, zookeeper_node {
+				zookeeper_node.vm_size not in doc.allowed
+			}
+	}
+}
+
+// Build a summary report
+summaryreport = {
+	"name": doc.name,
+	"violations": map violators as _, violation {
+		{
+			"name":    violation.name,
+			"address": violation.address,
+			"type":    violation.type,
+			"message": violation.name + doc.error,
+		}
+	},
+}
+
+# Unapproved instance type detected
+main = rule {
+	policy_summary.summary(summaryreport, doc)
+}

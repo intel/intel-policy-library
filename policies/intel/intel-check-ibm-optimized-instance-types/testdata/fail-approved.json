@@ -1,0 +1,22 @@
+{
+    "ibm": {
+        "policies_url": "https://github.com/intel/policy-library-intel/blob/main/docs/ibm/policies.md",
+        "ibm_is_instance": {
+            "resource": "ibm_is_instance",
+            "parameter": "profile",
+            "violation": "The configured `profile` should be an Intel Xeon 3rd Generation(code-named Ice Lake) Scalable processors or an Intel Xeon 4th Generation(code-named Sapphire Rapids) Scalable processors.",
+            "category": "Infrastructure (IaaS)",
+            "provider": "IBM-Cloud/ibm",
+            "deny_file_name": "intel-ibm-is-instance-deny-unapproved-instance-types.sentinel",
+            "check_file_name": "intel-ibm-is-instance-check-optimal-instance-types.sentinel",
+            "error": " is configured with an unapproved instance type.",
+            "optimal": [
+                "fail"
+            ],
+            "alternative": [],
+            "ai": [],
+            "confidential_compute": [],
+            "config": ""
+        }
+    }
+}
