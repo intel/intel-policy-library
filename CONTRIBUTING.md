@@ -87,7 +87,7 @@ When fixing an issue, please include the issue number `Fixes #16` on the descrip
 
 ## Modifying Allowed Instance List and Policy Documentation
 
-To update the allowed list of instance types and the associated policy documents (`policies.md`) and the associated JSON files (`approved.json`), contributors must modify the `optimal.json` file. This triggers the Python script included in the repository, which automatically updates the markdown files and JSON configurations. Here's how you can contribute to this part:
+To update the allowed list of instance types and the associated policy documents (`policies.md`) and the associated JSON files (`approved.json`), contributors must modify the `optimal.json` file. This triggers the `parse_policies.py` Python script located in the `.github/` folder in the repository, which automatically updates the markdown files and JSON configurations. Here's how you can contribute to this part:
 
 1. Modify the `optimal.json` file according to the contribution guidelines specified for each cloud provider.
 2. Commit and push your changes to your fork.
