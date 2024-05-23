@@ -1,10 +1,10 @@
 <p align="center">
-  <img src="https://github.com/intel/policy-library-intel-aws/blob/main/images/logo-classicblue-800px.png?raw=true" alt="Intel Logo" width="250"/>
+  <img src="https://github.com/intel/intel-policy-library/blob/main/images/logo-classicblue-800px.png?raw=true" alt="Intel Logo" width="250"/>
 </p>
 
 # Sentinel Policies for Cloud Workloads - Intel Optimized Cloud Modules
 
-© Copyright 2022, Intel Corporation
+© Copyright 2024, Intel Corporation
 
 ## Purpose of this library
 

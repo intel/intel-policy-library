@@ -348,4 +348,3 @@ resource_changes = {
 		"type":           "ibm_is_security_group_rule",
 	},
 }
-
