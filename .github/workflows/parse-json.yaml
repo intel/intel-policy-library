@@ -1,4 +1,4 @@
-name: Execute parse-json.py
+name: Execute parse_json.py
 
 on:
   push:
@@ -18,8 +18,8 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Run parse-json.py
-        run: python .github/parse-json.py
+      - name: Run parse_json.py
+        run: python .github/parse_json.py
 
       - name: Commit changes to approved.json and policies.md files
         uses: EndBug/add-and-commit@v9
