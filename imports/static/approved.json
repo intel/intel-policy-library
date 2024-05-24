@@ -22,6 +22,11 @@
                 "c7i.48xlarge",
                 "c7i.metal-24xl",
                 "c7i.metal-48xl",
+                "c7i-flex.large",
+                "c7i-flex.xlarge",
+                "c7i-flex.2xlarge",
+                "c7i-flex.4xlarge",
+                "c7i-flex.8xlarge",
                 "m7i.12xlarge",
                 "m7i.16xlarge",
                 "m7i.24xlarge",
@@ -142,6 +147,11 @@
                 "c7i.48xlarge",
                 "c7i.metal-24xl",
                 "c7i.metal-48xl",
+                "c7i-flex.large",
+                "c7i-flex.xlarge",
+                "c7i-flex.2xlarge",
+                "c7i-flex.4xlarge",
+                "c7i-flex.8xlarge",
                 "m7i.12xlarge",
                 "m7i.16xlarge",
                 "m7i.24xlarge",
@@ -216,6 +226,11 @@
                 "c7i.48xlarge",
                 "c7i.metal-24xl",
                 "c7i.metal-48xl",
+                "c7i-flex.large",
+                "c7i-flex.xlarge",
+                "c7i-flex.2xlarge",
+                "c7i-flex.4xlarge",
+                "c7i-flex.8xlarge",
                 "m7i.12xlarge",
                 "m7i.16xlarge",
                 "m7i.24xlarge",
@@ -336,6 +351,11 @@
                 "c7i.48xlarge",
                 "c7i.metal-24xl",
                 "c7i.metal-48xl",
+                "c7i-flex.large",
+                "c7i-flex.xlarge",
+                "c7i-flex.2xlarge",
+                "c7i-flex.4xlarge",
+                "c7i-flex.8xlarge",
                 "m7i.12xlarge",
                 "m7i.16xlarge",
                 "m7i.24xlarge",
@@ -2097,7 +2117,7 @@
                 "m3-ultramem-128",
                 "m3-ultramem-32",
                 "m3-ultramem-64"
-             ],
+            ],
             "confidential_compute": [],
             "config": "[\"Intel Ice Lake\", \"Intel Sapphire Rapids\"]"
         },
@@ -2136,7 +2156,7 @@
                 "m3-ultramem-128",
                 "m3-ultramem-32",
                 "m3-ultramem-64"
-             ],
+            ],
             "alternative": [
                 "n2-highcpu-16",
                 "n2-highcpu-2",
@@ -2193,7 +2213,7 @@
                 "m3-ultramem-128",
                 "m3-ultramem-32",
                 "m3-ultramem-64"
-              ],
+            ],
             "confidential_compute": [],
             "config": "[\"Intel Ice Lake\", \"Intel Sapphire Rapids\"]"
         },
@@ -2225,7 +2245,7 @@
                 "c3-standard-44",
                 "c3-standard-88",
                 "c3-standard-176"
-              ],
+            ],
             "alternative": [
                 "n2-standard-2",
                 "n2-standard-4",
@@ -2280,7 +2300,7 @@
                 "c3-standard-44",
                 "c3-standard-88",
                 "c3-standard-176"
-             ],
+            ],
             "confidential_compute": [],
             "config": "[\"Intel Cascade Lake\", \"Intel Ice Lake\", \"Intel Sapphire Rapids\",]"
         },
