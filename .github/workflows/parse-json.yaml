@@ -1,6 +1,7 @@
 name: Execute parse_json.py
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'imports/static/optimal.json'
