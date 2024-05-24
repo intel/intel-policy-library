@@ -87,14 +87,14 @@ When fixing an issue, please include the issue number `Fixes #16` on the descrip
 
 ## Modifying Allowed Instance List and Policy Documentation
 
-To update the allowed list of instance types and the associated policy documents (`policies.md`) and the associated JSON files (`approved.json`), contributors must modify the `optimal.json` file. This triggers the `parse_json.py` Python script located in the `.github/` folder in the repository, which automatically updates the markdown files and JSON configurations. Here's how you can contribute to this part:
+To update the allowed list of instance types and the associated policy documents (`policies.md`) and the associated JSON files (`approved.json`), contributors must modify the `/imports/static/optimal.json` file. This triggers the `parse_json.py` Python script located in the `.github/` folder in the repository, which automatically updates the markdown files and JSON configurations. Here's how you can contribute to this part:
 
-1. Modify the `optimal.json` file according to the contribution guidelines specified for each cloud provider.
+1. Modify the `/imports/static/optimal.json` file according to the contribution guidelines specified for each cloud provider.
 2. Commit and push your changes to your fork.
-3. Open a pull request. Include details of the changes in the `optimal.json` file and mention how it impacts the policy documents.
+3. Open a pull request. Include details of the changes in the `/imports/static/optimal.json` file and mention how it impacts the policy documents.
 4. The script will automatically generate updates to the markdown and JSON files when the pull request is merged into the main branch.
 
-**Note:** The script must only be triggered by modifications to `optimal.json`. Do not directly modify `policies.md` or `approved.json` files as these are automatically generated.
+**Note:** The script must only be triggered by modifications to `/imports/static/optimal.json`. Do not directly modify `policies.md` or `approved.json` files as these are automatically generated.
 
 **Note** For more information see our `Getting Started` section in the `README.md`
 
