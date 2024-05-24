@@ -2,9 +2,9 @@ import json
 import os
 
 # Constants for file paths
-OPTIMAL_JSON_PATH = "../imports/static/optimal.json"
-APPROVED_JSON_PATH = "../imports/static/approved.json"
-POLICIES_DIR_PATH = "../docs/{}/policies.md"
+OPTIMAL_JSON_PATH = "imports/static/optimal.json"
+APPROVED_JSON_PATH = "imports/static/approved.json"
+POLICIES_DIR_PATH = "docs/{}/policies.md"
 
 # Load data from optimal.json
 with open(OPTIMAL_JSON_PATH, 'r') as file:
