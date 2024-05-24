@@ -153,7 +153,7 @@ If you are using the Terraform Registry your instance types will be automaticall
 
 ## Intel® Xeon® Scalable Processors and Intel® Advanced Matrix Extensions (AMX)
 
-Intel® AMX is a new built-in accelerator that improves the performance of deep-learning training and inference on the CPU and is ideal for workloads like natural-language processing, recommendation systems and image recognition.
+Intel® AMX is a new built-in accelerator that improves AI (Artificial Intelligence) performance of deep-learning training and inference on the CPU and is ideal for workloads like LLMs, natural-language processing, recommendation systems and image recognition.
 
 Deep learning workloads, such as those that that rely on generative AI, large language models (LLMs), and computer vision, can be incredibly compute intensive, requiring high levels of performance and, often, additional specialized hardware to ensure successful AI deployment. The associated costs of these requirements can quickly escalate, and adding discrete hardware solutions can create unnecessary layers of complexity and compatibility issues.
 
