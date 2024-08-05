@@ -184,6 +184,10 @@ Take confidential computing to the next level with a zero trust attestation SaaS
 
 ### AWS
 
+Confirmed still active
+updated 8/5/24
+
+
 - intel-ai-aws-autoscaling-group-deny-unapproved-instance-types ([docs](https://github.com/intel/intel-policy-library/blob/main/docs/aws/policies/ai/intel-aws-ai-autoscaling-group-deny-unapproved-instance-types.md) | [code](https://github.com/intel/intel-policy-library/blob/main/policies/aws/ai/intel-ai-aws-autoscaling-group-deny-unapproved-instance-types/intel-ai-aws-autoscaling-group-deny-unapproved-instance-types.sentinel))
 - intel-ai-aws-eks-node-group-deny-unapproved-instance-types ([docs](https://github.com/intel/intel-policy-library/blob/main/docs/aws/policies/ai/intel-aws-ai-eks-node-group-deny-unapproved-instance-types.md) | [code](https://github.com/intel/intel-policy-library/blob/main/policies/aws/ai/intel-ai-aws-eks-node-group-deny-unapproved-instance-types/intel-ai-aws-eks-node-group-deny-unapproved-instance-types.sentinel))
 - intel-ai-aws-instance-deny-unapproved-instance-types ([docs](https://github.com/intel/intel-policy-library/blob/main/docs/aws/policies/ai/intel-aws-ai-instance-deny-unapproved-instance-types%20copy.md) | [code](https://github.com/intel/intel-policy-library/blob/main/policies/aws/ai/intel-ai-aws-instance-deny-unapproved-instance-types/intel-ai-aws-instance-deny-unapproved-instance-types.sentinel))
