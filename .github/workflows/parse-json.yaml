@@ -1,4 +1,5 @@
 name: Execute parse_json.py
+permissions: read-all
 
 on:
   workflow_dispatch:
