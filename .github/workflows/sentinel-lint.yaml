@@ -1,4 +1,6 @@
 name: Sentinel Lint
+permissions: read-all
+
 on:
   - pull_request
 
