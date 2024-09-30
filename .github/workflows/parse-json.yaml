@@ -9,6 +9,11 @@ on:
 
 jobs:
   execute:
+    permissions:
+      actions: write
+      contents: write
+      pull-requests: write
+      issues: write
     runs-on: ubuntu-latest
 
     steps:
