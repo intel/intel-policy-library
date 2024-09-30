@@ -1,4 +1,5 @@
 name: JSON Linter
+permissions: read-all
 
 on:
   pull_request:
